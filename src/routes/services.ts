@@ -7,12 +7,12 @@ import { serviceSchema } from '../validators';
 
 const router = Router();
 
-// POST /api/services — Freelancer only
+
 router.post('/', authenticate, authorize('freelancer'), async (req, res) => {
   try {
     const user = (req as AuthRequest).user!;
 
-    // Validate request body
+    
     const parsed = serviceSchema.safeParse(req.body);
     if (!parsed.success) {
       return sendError(res, 'INVALID_REQUEST', 400);
@@ -20,7 +20,7 @@ router.post('/', authenticate, authorize('freelancer'), async (req, res) => {
 
     const { title, description, category, pricingType, price, deliveryDays } = parsed.data;
 
-    // Create the service linked to this freelancer
+    
     const service = await prisma.service.create({
       data: {
         freelancerId: user.id,
