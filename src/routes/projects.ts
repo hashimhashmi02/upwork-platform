@@ -7,12 +7,12 @@ import { projectSchema } from '../validators';
 
 const router = Router();
 
-// POST /api/projects — Client only
+
 router.post('/', authenticate, authorize('client'), async (req, res) => {
   try {
     const user = (req as AuthRequest).user!;
 
-    // Validate request body
+    
     const parsed = projectSchema.safeParse(req.body);
     if (!parsed.success) {
       return sendError(res, 'INVALID_REQUEST', 400);
@@ -20,13 +20,13 @@ router.post('/', authenticate, authorize('client'), async (req, res) => {
 
     const { title, description, category, budgetMin, budgetMax, deadline, requiredSkills } = parsed.data;
 
-    // Check deadline is in the future
+    
     const deadlineDate = new Date(deadline);
     if (deadlineDate <= new Date()) {
       return sendError(res, 'INVALID_REQUEST', 400);
     }
 
-    // Create the project
+    
     const project = await prisma.project.create({
       data: {
         clientId: user.id,
@@ -47,12 +47,12 @@ router.post('/', authenticate, authorize('client'), async (req, res) => {
   }
 });
 
-// GET /api/projects — Auth required, with filters
+
 router.get('/', authenticate, async (req, res) => {
   try {
     const { category, status, minBudget, skills } = req.query;
 
-    // Build dynamic where clause based on query params
+    
     const where: any = {};
 
     if (category) {
