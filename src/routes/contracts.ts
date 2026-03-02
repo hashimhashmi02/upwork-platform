@@ -5,13 +5,13 @@ import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-// GET /api/contracts — Auth required, with filters
+
 router.get('/', authenticate, async (req, res) => {
   try {
     const user = (req as AuthRequest).user!;
     const { status, role } = req.query;
 
-    // Build where clause — user must be either the client or freelancer
+    
     const where: any = {
       OR: [
         { clientId: user.id },
@@ -19,12 +19,12 @@ router.get('/', authenticate, async (req, res) => {
       ],
     };
 
-    // Filter by status if provided
+    
     if (status) {
       where.status = status as string;
     }
 
-    // Filter by role if provided (only show contracts where user has that role)
+    
     if (role === 'client') {
       delete where.OR;
       where.clientId = user.id;
