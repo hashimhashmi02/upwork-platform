@@ -23,7 +23,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api', proposalRoutes);          // handles /api/projects/:id/proposals AND /api/proposals/:id/accept
+app.use('/api', proposalRoutes);          
 app.use('/api/contracts', contractRoutes);
 app.use('/api/milestones', milestoneRoutes);
 app.use('/api/reviews', reviewRoutes);
