@@ -6,9 +6,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import { signupSchema, loginSchema } from '../validators';
 
 const router = Router();
-
-
-router.post('/signup', async (req, res) => {
+  router.post('/signup', async (req, res) => {
   try {
     
     const parsed = signupSchema.safeParse(req.body);
@@ -23,11 +21,7 @@ router.post('/signup', async (req, res) => {
     if (existingUser) {
       return sendError(res, 'EMAIL_ALREADY_EXISTS', 400);
     }
-
-    
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    
     const user = await prisma.user.create({
       data: {
         name,
