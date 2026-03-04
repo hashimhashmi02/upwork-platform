@@ -15,8 +15,6 @@ const router = Router();
     }
 
     const { name, email, password, role, bio, skills, hourlyRate } = parsed.data;
-
-    
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return sendError(res, 'EMAIL_ALREADY_EXISTS', 400);
@@ -33,8 +31,7 @@ const router = Router();
         hourlyRate: hourlyRate || null,
       },
     });
-
-    
+  
     return sendSuccess(res, {
       id: user.id,
       name: user.name,
@@ -48,7 +45,6 @@ const router = Router();
     return sendError(res, 'INTERNAL_SERVER_ERROR', 500);
   }
 });
-
 
 router.post('/login', async (req, res) => {
   try {
@@ -66,20 +62,16 @@ router.post('/login', async (req, res) => {
       return sendError(res, 'INVALID_CREDENTIALS', 401);
     }
 
-    
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       return sendError(res, 'INVALID_CREDENTIALS', 401);
     }
 
-    
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET!,
       { expiresIn: '24h' }
     );
-
-    
     return sendSuccess(res, {
       token,
       user: {
